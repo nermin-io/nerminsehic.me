@@ -7,7 +7,7 @@ import {
 import invariant from "tiny-invariant";
 import { BlogFrontmatter, getBlogPost } from "~/utils/blog";
 import { useLoaderData } from "@remix-run/react";
-import { useMdxComponent } from "~/utils/mdx";
+import { useMdxComponent } from "~/hooks/useMdxComponent";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   invariant(params.slug, "params.slug is not defined");
