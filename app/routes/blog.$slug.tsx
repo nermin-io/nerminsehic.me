@@ -5,13 +5,13 @@ import {
   TypedResponse,
 } from "@remix-run/node";
 import invariant from "tiny-invariant";
-import { BlogFrontmatter, getPost } from "~/utils/post";
+import { BlogFrontmatter, getBlogPost } from "~/utils/blog";
 import { useLoaderData } from "@remix-run/react";
 import { useMdxComponent } from "~/utils/mdx";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   invariant(params.slug, "params.slug is not defined");
-  const post = await getPost(params.slug);
+  const post = await getBlogPost(params.slug);
   if (!post) {
     throw new Response("Not Found", { status: 404 });
   }

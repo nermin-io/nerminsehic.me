@@ -1,9 +1,9 @@
-import { getPosts } from "~/utils/post";
+import { getBlogPosts } from "~/utils/blog";
 import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 
 export async function loader() {
-  const posts = await getPosts();
+  const posts = await getBlogPosts();
   return json(posts);
 }
 
