@@ -3,11 +3,21 @@ import {
   LoaderFunctionArgs,
   MetaFunction,
   TypedResponse,
+  type LinksFunction,
 } from "@remix-run/node";
 import invariant from "tiny-invariant";
 import { BlogFrontmatter, getBlogPost } from "~/utils/blog";
 import { useLoaderData } from "@remix-run/react";
 import { useMdxComponent } from "~/hooks/useMdxComponent";
+
+import styles from "highlight.js/styles/github-dark-dimmed.css";
+
+export const links: LinksFunction = () => [
+  {
+    rel: "stylesheet",
+    href: styles,
+  },
+];
 
 export async function loader({ params }: LoaderFunctionArgs) {
   invariant(params.slug, "params.slug is not defined");
@@ -41,8 +51,10 @@ export default function BlogPage() {
   const Component = useMdxComponent(code);
 
   return (
-    <div>
-      <Component />
+    <div className="flex justify-center">
+      <div className="prose dark:prose-invert lg:prose-xl py-10">
+        <Component />
+      </div>
     </div>
   );
 }
