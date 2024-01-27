@@ -11,7 +11,6 @@ export default function BlogIndex() {
   const posts = useLoaderData<typeof loader>();
   return (
     <div>
-      <h1 className="text-primary font-serif">Nermin Sehic</h1>
       <ul>
         {posts.map((post) => (
           <li key={post.slug}>
