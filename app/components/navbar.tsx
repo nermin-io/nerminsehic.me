@@ -2,11 +2,24 @@ import { Link, useLocation } from "@remix-run/react";
 import { cn } from "~/utils/classnames";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { LinkedInIcon } from "~/components/icons/LinkedInIcon";
+import { GithubIcon } from "~/components/icons/GithubIcon";
 
 const LINKS = [
   { name: "Blog", to: "/blog" },
   { name: "Projects", to: "/projects" },
   { name: "Certs", to: "/certifications" },
+];
+
+const SOCIAL_LINKS = [
+  {
+    icon: GithubIcon,
+    to: "https://github.com/nermin-io",
+  },
+  {
+    icon: LinkedInIcon,
+    to: "https://www.linkedin.com/in/nsehic/",
+  },
 ];
 
 const NAV_WIDTH = 80;
@@ -68,15 +81,33 @@ function NavList() {
   );
 }
 
+function SocialLinks() {
+  return (
+    <div className="flex flex-row gap-5">
+      {SOCIAL_LINKS.map((link) => (
+        <Link
+          key={link.to}
+          to={link.to}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <link.icon fill="#787878" onHoverFill="#979797" />
+        </Link>
+      ))}
+    </div>
+  );
+}
+
 export function Navbar() {
   return (
-    <nav className="container mx-auto border-b border-background-muted h-12 flex flex-row items-center">
-      <div className="flex flex-row gap-8 h-full items-center">
+    <nav className="container mx-auto border-b border-background-muted h-12 flex flex-row items-center justify-between">
+      <div className="flex flex-row gap-5 h-full items-center">
         <Link prefetch="intent" to="/">
           <h1 className="font-serif font-medium text-primary text-xl">NS</h1>
         </Link>
         <NavList />
       </div>
+      <SocialLinks />
     </nav>
   );
 }
