@@ -7,13 +7,10 @@ interface ArticleListProps {
 
 export function ArticleList({ posts }: ArticleListProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <h2 className="text-lg font-medium">From The Blog</h2>
-      <div className="flex flex-col gap-3">
-        {posts.map((post) => (
-          <ArticleCard post={post} key={post.slug} />
-        ))}
-      </div>
+    <div className="flex flex-col gap-3">
+      {posts.map((post) => (
+        <ArticleCard post={post} key={post.slug} />
+      ))}
     </div>
   );
 }

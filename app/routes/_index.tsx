@@ -26,13 +26,14 @@ export default function Index() {
   const posts = useLoaderData<typeof loader>();
   return (
     <div>
-      <Header />
+      <Header title="Nermin Sehic" subtitle="Software Developer" />
       <AboutSection />
       <SkillsSection />
       <section
         id="blog"
         className="space-y-2 py-8 border-b border-background-muted"
       >
+        <h2 className="font-medium text-lg">From The Blog</h2>
         <ArticleList posts={posts} />
       </section>
     </div>
