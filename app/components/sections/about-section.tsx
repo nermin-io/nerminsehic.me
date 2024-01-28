@@ -2,7 +2,10 @@ import { Link } from "@remix-run/react";
 
 export function AboutSection() {
   return (
-    <section className="space-y-2 py-5 border-b border-background-muted">
+    <section
+      id="about"
+      className="space-y-2 py-8 border-b border-background-muted"
+    >
       <h2 className="text-lg font-medium">About</h2>
       <div className="text-md flex flex-col gap-3 text-foreground-muted">
         <p>
