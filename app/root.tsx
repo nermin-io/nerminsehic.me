@@ -27,7 +27,9 @@ export default function App() {
       </head>
       <body>
         <Navbar />
-        <Outlet />
+        <div className="container">
+          <Outlet />
+        </div>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
