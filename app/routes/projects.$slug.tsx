@@ -6,7 +6,7 @@ import {
   type LinksFunction,
 } from "@remix-run/node";
 import invariant from "tiny-invariant";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import { useMdxComponent } from "~/hooks/useMdxComponent";
 
 import styles from "highlight.js/styles/github-dark-dimmed.css";
@@ -65,9 +65,17 @@ export default function ProjectPage() {
     <div>
       <div className="flex flex-col gap-3">
         <Header title={title} subtitle={format(date, "dd MMMM, yyyy")} />
-        <span className="font-serif uppercase text-foreground-muted text-sm">
-          {tags}
-        </span>
+        <div className="flex flex-row gap-1 items-center font-serif text-sm uppercase">
+          <span className="text-foreground-muted">{tags}</span>
+          {frontmatter.site && (
+            <span>
+              •{" "}
+              <Link to={frontmatter.site} className="text-primary">
+                Visit Site
+              </Link>
+            </span>
+          )}
+        </div>
       </div>
       <div className="prose dark:prose-invert py-6 max-w-none">
         <Component />
