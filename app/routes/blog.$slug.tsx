@@ -39,7 +39,13 @@ type MetaLoader = () => Promise<
 
 export const meta: MetaFunction<MetaLoader> = ({ data }) => {
   if (data) {
-    return [{ title: `Nermin Sehic :: ${data.frontmatter.title}` }];
+    return [
+      { title: `Nermin Sehic :: ${data.frontmatter.title}` },
+      {
+        name: "description",
+        content: data.frontmatter.description,
+      },
+    ];
   }
   return [{ title: "Not Found" }];
 };
