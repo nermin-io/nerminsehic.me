@@ -1,11 +1,11 @@
 const SKILLS = [
   "typescript",
-  "javascript",
   "react",
   "node.js",
   "gcp",
-  "express",
+  "go",
   "nest.js",
+  "express",
 ];
 
 export function SkillsSection() {
