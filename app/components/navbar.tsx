@@ -17,24 +17,6 @@ function isLinkSelected(link: string, pathname: string): boolean {
   return link === pathname || pathname.startsWith(`${link}/`);
 }
 
-function Navlink({
-  to,
-  isSelected,
-  ...props
-}: Omit<Parameters<typeof Link>["0"], "to"> & {
-  to: string;
-  isSelected: boolean;
-}) {
-  return (
-    <Link
-      prefetch="intent"
-      to={to}
-      className={cn("text-sm", isSelected && "font-medium")}
-      {...props}
-    />
-  );
-}
-
 function NavList() {
   const location = useLocation();
   const currentPageIndex = getCurrentPageIndex(location.pathname);
@@ -57,9 +39,13 @@ function NavList() {
               onMouseLeave={() => setNavIndex(currentPageIndex)}
               onFocus={() => setNavIndex(index)}
             >
-              <Navlink to={link.to} isSelected={isSelected}>
+              <Link
+                prefetch="intent"
+                to={link.to}
+                className={cn("text-sm", isSelected && "font-medium")}
+              >
                 {link.name}
-              </Navlink>
+              </Link>
             </li>
           );
         })}
