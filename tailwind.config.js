@@ -21,6 +21,11 @@ export default {
         DEFAULT: {
           css: {
             color: "#F6F6F6",
+            a: {
+              color: "var(--primary)",
+              fontFamily: "var(--font-serif)",
+              textDecoration: "none",
+            },
           },
         },
       },

@@ -59,7 +59,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="dark">
         <div className="h-screen flex flex-col justify-between">
           <div>
             <Navbar />

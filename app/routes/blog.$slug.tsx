@@ -11,6 +11,8 @@ import { useLoaderData } from "@remix-run/react";
 import { useMdxComponent } from "~/hooks/useMdxComponent";
 
 import styles from "highlight.js/styles/github-dark-dimmed.css";
+import { Header } from "~/components/header";
+import { format } from "date-fns";
 
 export const links: LinksFunction = () => [
   {
@@ -37,22 +39,31 @@ type MetaLoader = () => Promise<
 
 export const meta: MetaFunction<MetaLoader> = ({ data }) => {
   if (data) {
-    return [{ title: data.frontmatter.title }];
+    return [{ title: `Nermin Sehic :: ${data.frontmatter.title}` }];
   }
-  return [
-    {
-      title: "Not Found",
-    },
-  ];
+  return [{ title: "Not Found" }];
 };
 
 export default function BlogPage() {
-  const { code } = useLoaderData<typeof loader>();
+  const { code, frontmatter } = useLoaderData<typeof loader>();
   const Component = useMdxComponent(code);
 
+  const date = frontmatter.timestamp
+    ? new Date(frontmatter.timestamp)
+    : new Date();
+
+  const title = frontmatter.title ?? "";
+  const tags = frontmatter.tags ? frontmatter.tags.join(", ") : "";
+
   return (
-    <div className="flex justify-center">
-      <div className="prose dark:prose-invert lg:prose-xl py-10">
+    <div>
+      <div className="flex flex-col gap-3">
+        <Header title={title} subtitle={format(date, "dd MMMM, yyyy")} />
+        <span className="font-serif uppercase text-foreground-muted text-sm">
+          {tags}
+        </span>
+      </div>
+      <div className="prose dark:prose-invert py-6 max-w-none">
         <Component />
       </div>
     </div>

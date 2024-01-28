@@ -8,7 +8,6 @@ import { GithubIcon } from "~/components/icons/GithubIcon";
 const LINKS = [
   { name: "Blog", to: "/blog" },
   { name: "Projects", to: "/projects" },
-  { name: "Certs", to: "/certifications" },
 ];
 
 const SOCIAL_LINKS = [
