@@ -10,7 +10,7 @@ import { BlogFrontmatter, getBlogPost } from "~/utils/blog";
 import { useLoaderData } from "@remix-run/react";
 import { useMdxComponent } from "~/hooks/useMdxComponent";
 
-import styles from "highlight.js/styles/github-dark-dimmed.css";
+import styles from "highlight.js/styles/base16/gruvbox-dark-hard.css";
 import { Header } from "~/components/header";
 import { format } from "date-fns";
 
