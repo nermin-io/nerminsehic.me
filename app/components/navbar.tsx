@@ -50,14 +50,16 @@ function NavList() {
           );
         })}
       </ul>
-      <motion.div
-        className="h-[1.5px] bg-primary w-[80px]"
-        animate={{ x: navIndex * 80 }}
-        transition={{
-          type: "spring",
-          duration: 0.5,
-        }}
-      />
+      {location.pathname !== "/" && (
+        <motion.div
+          className="h-[1.5px] bg-primary w-[80px]"
+          animate={{ x: navIndex * 80 }}
+          transition={{
+            type: "spring",
+            duration: 0.5,
+          }}
+        />
+      )}
     </div>
   );
 }
