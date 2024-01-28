@@ -9,6 +9,8 @@ const LINKS = [
   { name: "Certs", to: "/certifications" },
 ];
 
+const NAV_WIDTH = 80;
+
 function getCurrentPageIndex(pathname: string): number {
   return LINKS.findIndex((link) => isLinkSelected(link.to, pathname));
 }
@@ -33,7 +35,8 @@ function NavList() {
           const isSelected = isLinkSelected(link.to, location.pathname);
           return (
             <li
-              className="w-[80px] flex items-center justify-center h-full"
+              className="flex items-center justify-center h-full"
+              style={{ width: NAV_WIDTH }}
               key={link.to}
               onMouseOver={() => setNavIndex(index)}
               onMouseLeave={() => setNavIndex(currentPageIndex)}
@@ -52,8 +55,9 @@ function NavList() {
       </ul>
       {location.pathname !== "/" && (
         <motion.div
-          className="h-[1.5px] bg-primary w-[80px]"
-          animate={{ x: navIndex * 80 }}
+          className="h-[1.5px] bg-primary"
+          style={{ width: NAV_WIDTH }}
+          animate={{ x: navIndex * NAV_WIDTH }}
           transition={{
             type: "spring",
             duration: 0.5,
