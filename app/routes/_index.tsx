@@ -1,5 +1,6 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Header } from "~/components/header";
+import { Link } from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -21,11 +22,19 @@ export default function Index() {
         <div className="text-md flex flex-col gap-3 text-foreground-muted">
           <p>
             👨‍💻 Hey there, I&apos;m Nermin, an experienced software developer
-            currently immersed in the world of internal tools and automations at
-            Rendr. My toolkit includes TypeScript, JavaScript, Go, and React,
-            among others. With a keen eye for aesthetics and performance, I
-            thrive on crafting beautiful and efficient user interfaces, though
-            I&apos;m no stranger to backend intricacies.
+            currently immersed in the world of internal tools and automations at{" "}
+            <Link
+              to="https://rendr.delivery"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="special"
+            >
+              Rendr
+            </Link>
+            . My toolkit includes TypeScript, JavaScript, Go, and React, among
+            others. With a keen eye for aesthetics and performance, I thrive on
+            crafting beautiful and efficient user interfaces, though I&apos;m no
+            stranger to backend intricacies.
           </p>
           <p>
             ✨ When I&apos;m not immersed in code, you can often find me at

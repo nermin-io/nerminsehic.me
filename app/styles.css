@@ -30,4 +30,8 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .special {
+    @apply font-serif text-primary
+  }
 }
