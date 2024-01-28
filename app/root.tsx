@@ -10,6 +10,7 @@ import {
 } from "@remix-run/react";
 import styles from "./styles.css";
 import { Navbar } from "~/components/navbar";
+import { Footer } from "~/components/footer";
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
@@ -26,9 +27,14 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Navbar />
-        <div className="container">
-          <Outlet />
+        <div className="h-screen flex flex-col justify-between">
+          <div>
+            <Navbar />
+            <div className="container">
+              <Outlet />
+            </div>
+          </div>
+          <Footer />
         </div>
         <ScrollRestoration />
         <Scripts />

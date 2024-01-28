@@ -32,7 +32,10 @@ export default {
           DEFAULT: "var(--background)",
           muted: "var(--background-muted)",
         },
-        foreground: "var(--foreground)",
+        foreground: {
+          DEFAULT: "var(--foreground)",
+          muted: "var(--foreground-muted)",
+        },
         primary: "var(--primary)",
       },
       borderRadius: {
