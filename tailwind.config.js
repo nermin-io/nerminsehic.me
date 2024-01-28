@@ -7,7 +7,7 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: "1rem",
       screens: {
         "2xl": "1400px",
       },
@@ -28,7 +28,10 @@ export default {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "var(--background)",
+        background: {
+          DEFAULT: "var(--background)",
+          muted: "var(--background-muted)",
+        },
         foreground: "var(--foreground)",
         primary: "var(--primary)",
       },

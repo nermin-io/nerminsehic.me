@@ -7,6 +7,7 @@
 @layer base {
   :root {
     --background: #191919;
+    --background-muted: #242424;
     --foreground: #f6f6f6;
     --primary: #dff962;
     --border: 240 5.9% 90%;
