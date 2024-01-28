@@ -53,6 +53,7 @@ function NavList() {
               onMouseOver={() => setNavIndex(index)}
               onMouseLeave={() => setNavIndex(currentPageIndex)}
               onFocus={() => setNavIndex(index)}
+              onBlur={() => setNavIndex(currentPageIndex)}
             >
               <Link
                 prefetch="intent"
