@@ -6,6 +6,13 @@ import { bundleMDX } from "./mdx.server";
 export type BlogFrontmatter = {
   title?: string;
   description?: string;
+  timestamp?: string;
+  tags?: string[];
+};
+
+export type BlogPost = {
+  slug: string;
+  frontmatter: BlogFrontmatter;
 };
 
 export async function getBlogPost(slug: string) {
@@ -54,23 +61,23 @@ export async function getBlogPost(slug: string) {
   }
 }
 
-export async function getBlogPosts() {
+export async function getBlogPosts(): Promise<BlogPost[]> {
   const cwd = process.cwd();
   const postsPath = path.join(cwd, "content", "blog");
 
-  const dirents = await readdir(postsPath, {
+  const directoryEntries = await readdir(postsPath, {
     withFileTypes: true,
   });
 
   return await Promise.all(
-    dirents.map(async (dirent) => {
-      const direntPath = path.join(postsPath, dirent.name);
-      const file = await readFile(direntPath);
-      const frontmatter = parseFrontMatter(file.toString());
+    directoryEntries.map(async (file) => {
+      const direntPath = path.join(postsPath, file.name);
+      const fileData = await readFile(direntPath);
+      const frontmatter = parseFrontMatter(fileData.toString());
       const attributes = frontmatter.attributes as BlogFrontmatter;
 
       return {
-        slug: dirent.name.replace(/\.mdx/, ""),
+        slug: file.name.replace(/\.mdx/, ""),
         frontmatter: {
           ...attributes,
         },

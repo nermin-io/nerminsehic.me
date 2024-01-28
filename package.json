@@ -16,6 +16,7 @@
     "@remix-run/react": "^2.5.0",
     "@remix-run/serve": "^2.5.0",
     "clsx": "^2.1.0",
+    "date-fns": "^3.3.1",
     "framer-motion": "^11.0.3",
     "front-matter": "^4.0.2",
     "highlight.js": "^11.9.0",
