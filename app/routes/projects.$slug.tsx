@@ -70,7 +70,12 @@ export default function ProjectPage() {
           {frontmatter.site && (
             <span>
               •{" "}
-              <Link to={frontmatter.site} className="text-primary">
+              <Link
+                to={frontmatter.site}
+                className="text-primary"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Visit Site
               </Link>
             </span>
