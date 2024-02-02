@@ -26,6 +26,7 @@ export default {
               fontFamily: "var(--font-serif)",
               textDecoration: "none",
             },
+            "--tw-prose-invert-pre-bg": "#1d2021",
           },
         },
       },
