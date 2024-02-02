@@ -19,10 +19,18 @@ export function AboutSection() {
           >
             Rendr
           </Link>
-          . My toolkit includes TypeScript, JavaScript, Go, and React, among
-          others. With a keen eye for aesthetics and performance, I thrive on
-          crafting beautiful and efficient user interfaces, though I&apos;m no
-          stranger to backend intricacies.
+          . My toolkit includes TypeScript, JavaScript, Go,{" "}
+          <Link
+            to="/OCP_Certificate.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="special"
+          >
+            Java
+          </Link>
+          , and React, among others. With a keen eye for aesthetics and
+          performance, I thrive on crafting beautiful and efficient user
+          interfaces, though I&apos;m no stranger to backend intricacies.
         </p>
         <p>
           ✨ When I&apos;m not immersed in code, you can often find me at
