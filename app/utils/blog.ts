@@ -66,7 +66,7 @@ export async function getBlogPost(slug: string) {
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
   const cwd = process.cwd();
-  const postsPath = path.join(cwd, "/content", "blog");
+  const postsPath = path.join(cwd, "content", "blog");
 
   const directoryEntries = await readdir(postsPath, {
     withFileTypes: true,
@@ -81,7 +81,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
       const attributes = frontmatter.attributes as BlogFrontmatter;
 
       const slug = file.name.replace(/\.mdx/, "");
-      const route = path.join("blog", slug);
+      const route = path.join("/blog", slug);
 
       return {
         slug: slug,
