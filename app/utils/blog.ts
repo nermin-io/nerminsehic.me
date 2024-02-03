@@ -1,6 +1,7 @@
 import parseFrontMatter from "front-matter";
 import { readFile, readdir } from "./fs.server";
 import path from "path";
+import fs from "fs";
 import { bundleMDX } from "./mdx.server";
 
 export type BlogFrontmatter = {
@@ -12,7 +13,9 @@ export type BlogFrontmatter = {
 
 export type BlogPost = {
   slug: string;
+  route: string;
   frontmatter: BlogFrontmatter;
+  lastModified?: Date;
 };
 
 export async function getBlogPost(slug: string) {
@@ -63,7 +66,7 @@ export async function getBlogPost(slug: string) {
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
   const cwd = process.cwd();
-  const postsPath = path.join(cwd, "content", "blog");
+  const postsPath = path.join(cwd, "/content", "blog");
 
   const directoryEntries = await readdir(postsPath, {
     withFileTypes: true,
@@ -71,13 +74,19 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
 
   return await Promise.all(
     directoryEntries.map(async (file) => {
+      const stats = fs.statSync(file.path);
       const direntPath = path.join(postsPath, file.name);
       const fileData = await readFile(direntPath);
       const frontmatter = parseFrontMatter(fileData.toString());
       const attributes = frontmatter.attributes as BlogFrontmatter;
 
+      const slug = file.name.replace(/\.mdx/, "");
+      const route = path.join("blog", slug);
+
       return {
-        slug: file.name.replace(/\.mdx/, ""),
+        slug: slug,
+        route: route,
+        lastModified: stats.mtime,
         frontmatter: {
           ...attributes,
         },

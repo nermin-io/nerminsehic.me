@@ -1,6 +1,7 @@
 import parseFrontMatter from "front-matter";
 import { readFile, readdir } from "./fs.server";
 import path from "path";
+import fs from "fs";
 import { bundleMDX } from "./mdx.server";
 
 export type ProjectFrontmatter = {
@@ -13,7 +14,9 @@ export type ProjectFrontmatter = {
 
 export type Project = {
   slug: string;
+  route: string;
   frontmatter: ProjectFrontmatter;
+  lastModified?: Date;
 };
 
 export async function getProject(slug: string) {
@@ -72,13 +75,19 @@ export async function getAllProjects(): Promise<Project[]> {
 
   return await Promise.all(
     directoryEntries.map(async (file) => {
+      const stats = fs.statSync(file.path);
       const direntPath = path.join(postsPath, file.name);
       const fileData = await readFile(direntPath);
       const frontmatter = parseFrontMatter(fileData.toString());
       const attributes = frontmatter.attributes as ProjectFrontmatter;
 
+      const slug = file.name.replace(/\.mdx/, "");
+      const route = path.join("/projects", slug);
+
       return {
-        slug: file.name.replace(/\.mdx/, ""),
+        slug: slug,
+        route: route,
+        lastModified: stats.mtime,
         frontmatter: {
           ...attributes,
         },
