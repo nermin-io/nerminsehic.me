@@ -43,6 +43,7 @@ export default {
           muted: "var(--foreground-muted)",
         },
         primary: "var(--primary)",
+        muted: "var(--muted)",
       },
       borderRadius: {
         lg: "var(--radius)",

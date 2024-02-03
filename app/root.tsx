@@ -11,6 +11,7 @@ import {
 import styles from "./styles.css";
 import { Navbar } from "~/components/navbar";
 import { Footer } from "~/components/footer";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
@@ -50,6 +51,8 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+const queryClient = new QueryClient();
+
 export default function App() {
   return (
     <html lang="en">
@@ -64,7 +67,9 @@ export default function App() {
           <div>
             <Navbar />
             <div className="container">
-              <Outlet />
+              <QueryClientProvider client={queryClient}>
+                <Outlet />
+              </QueryClientProvider>
             </div>
           </div>
           <Footer />
