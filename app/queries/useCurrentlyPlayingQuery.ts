@@ -8,6 +8,9 @@ export function useCurrentlyPlayingQuery() {
       const response = await fetch("/currently-playing.json");
       return await response.json();
     },
+    refetchOnWindowFocus: "always",
+    refetchInterval: 30000,
+    refetchIntervalInBackground: false,
   });
 
   return { currentlyPlaying, ...rest };
