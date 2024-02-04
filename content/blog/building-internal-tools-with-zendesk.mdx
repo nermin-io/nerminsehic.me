@@ -1,6 +1,6 @@
 ---
 title: Building Internal Tools with Zendesk
-description: How I've been building internal tools at Rendr with Zendesk and React
+description: How Rendr builds internal tools with React and Zendesk.
 timestamp: 2024-02-03
 tags:
   - zendesk
@@ -9,3 +9,115 @@ tags:
   - nx
   - vite
 ---
+
+Over the past year, I have been building internal tools for [Rendr](https://rendr.delivery). Such
+tools include invoice generators, back-office admin tools for our operations team, accounting tools, and
+customer service tools. This article will focus on the customer service tools, and we will do a deep dive on
+how we build customer service tools at Rendr.
+
+## Background
+[Rendr](https://rendr.delivery) is a software company that is primarily focused on building an API that businesses
+can integrate with to show delivery rates at checkout of their online store, although we also build plugins for major
+eCommerce platforms to allow small businesses without a developer to get started really quickly. On top of that, Rendr
+offers a delivery dashboard UI to enable merchants to manage deliveries.
+
+At it's core, Rendr will use data from checkout and search its network of integrated carriers to find the most
+suitable carrier for a delivery. In particular, Rendr will find the best carrier for 3 different service types:
+- Fast - delivery within 3 hours
+- Flexible - same day delivery
+- Standard - standard shipping
+
+The service also takes into consideration different requirements, such at 'Authority to Leave', 'Tobacco',
+'Alcohol', 'Medicine', 'ID Check', and more.
+
+The benefit to the merchant is having one delivery service that deals with delivery requirements, quoting,
+booking, and simplifies the process of managing a delivery end-to-end. Another benefit is redundancy,
+when one carrier goes offline for the day, we will book with the next best delivery provider.
+
+With this network of carriers, we are able to service more areas of Australia than a single carrier alone.
+
+Since the service makes bookings on behalf of the merchant, we offer customer service 7 days a week to assist if
+any problems arise.
+
+## The Problem
+We truly have a great customer service team; no only do they assist merchants and receivers as problems arise, but they also continually
+monitor all the deliveries in progress and rectify as soon as something starts to go off-course. For example, if one carrier is not responding,
+our team will take precautionary action to reassign the booking to another one.
+
+This has not always been possible, however. Without great tools, our team aren't able to get a real-time view of live deliveries, and more importantly,
+they aren't able to take action on those deliveries.
+
+So, in January 2023, we started to look at some solutions to bring tools to the customer service team. The goal was to have something easily accessible from
+[Zendesk](https://www.zendesk.com/) (our ticketing software), so that the team don't have to constantly navigate to another site, but rather can manage
+a delivery as they are looking into a ticket.
+
+## The Solution
+We soon realised that the Zendesk software allows businesses to embed private apps in various locations, such as the ticket sidebar, editor, and the navigation
+bar. At it's core, Zendesk displays your apps through iframes, and provides you with a JavaScript library known as ZAF (Zendesk Application Framework) to help you with the cross-site communication.
+This allows developers to build a Zendesk app in a framework-agnostic fashion.
+
+So, we started a proof of concept with the following requirements:
+1. Since we weren't 100% locked in on this idea, we needed an abstraction, so we aren't using the ZAF library directly. This lowers our cost of change if we decide to
+go in another direction.
+2. We wanted to make the tools work with existing APIs. As the project was early stage, we didn't want to build other internal APIs yet.
+3. Build and rollout a prototype as quickly as possible to get early feedback.
+
+So we got started by building the abstraction. Since we were using TypeScript, we started with an interface that defined the behaviour we wanted. It looked a little like this:
+```ts
+interface PlatformService {
+  getTicket(): Promise<Ticket>;
+
+  getUser(): Promise<User>;
+
+  // .. rest omitted
+}
+
+interface Ticket {
+  id: number;
+  title: string;
+  description: string;
+  tags: string[];
+}
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  groups: string[];
+}
+```
+
+Then we wrote the concrete implementation that 'wraps' the ZAF framework:
+```ts
+class ZendeskPlatformService implements PlatformService {
+  private client: Client;
+
+  constructor() {
+    this.client = ZAFClient.init();
+  }
+
+  async getTicket() {
+    const ticket = await this.client.get('ticket');
+    // ... rest omitted
+  }
+}
+```
+
+This service was made available to the rest of the application via React context. A custom provider component was built to accept
+an implementation of the `PlatformService` interface and share it to components in the subtree. To assist with retrieving an instance of this service,
+we used a custom hook `usePlatform()`;
+
+This means that any component wrapped with `PlatformProvider` can access an instance of the platform service via `usePlatform()`. If we need to change the implementation
+at some future point in time, we can just pass in a different instance to the provider:
+```ts
+const zendeskPlatformService = new ZendeskPlatformService();
+//....
+
+export default function App() {
+  return (
+   <PlatformService service={zendeskPlatformService}>
+      <Example />
+   </PlatformService>
+  );
+}
+```
