@@ -4,10 +4,10 @@ export function AboutSection() {
   return (
     <section
       id="about"
-      className="space-y-2 py-8 border-b border-background-muted"
+      className="border-background-muted space-y-2 border-b py-8"
     >
       <h2 className="text-lg font-medium">About</h2>
-      <div className="text-md flex flex-col gap-3 text-foreground-muted">
+      <div className="text-md text-foreground-muted flex flex-col gap-3">
         <p>
           👨‍💻 Hey there, I&apos;m Nermin, an experienced software developer
           currently immersed in the world of internal tools and automations at{" "}

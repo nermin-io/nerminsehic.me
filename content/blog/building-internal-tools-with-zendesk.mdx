@@ -10,114 +10,46 @@ tags:
   - vite
 ---
 
-Over the past year, I have been building internal tools for [Rendr](https://rendr.delivery). Such
-tools include invoice generators, back-office admin tools for our operations team, accounting tools, and
-customer service tools. This article will focus on the customer service tools, and we will do a deep dive on
-how we build customer service tools at Rendr.
+## Introduction
+In the ever-evolving landscape of modern business operations, the development of internal tools plays a pivotal role in enhancing efficiency and effectiveness. At Rendr, over the past year, I have been deeply involved in crafting a suite of internal tools tailored to our specific needs. These tools encompass a spectrum of functionalities, from invoice generation to back-office administration, designed to streamline our operational workflows. In this article, I will delve into the intricacies of our approach to building customer service tools at Rendr, with a particular focus on leveraging React and Zendesk for optimal outcomes.
 
 ## Background
-[Rendr](https://rendr.delivery) is a software company that is primarily focused on building an API that businesses
-can integrate with to show delivery rates at checkout of their online store, although we also build plugins for major
-eCommerce platforms to allow small businesses without a developer to get started really quickly. On top of that, Rendr
-offers a delivery dashboard UI to enable merchants to manage deliveries.
+Rendr stands as a beacon in the realm of software solutions, specializing in the provision of APIs that empower businesses to seamlessly integrate delivery rate calculations into their online stores. Our repertoire extends beyond mere API offerings; we also develop plugins tailored for major eCommerce platforms, facilitating swift adoption even for businesses lacking dedicated development resources. Complementing these services, Rendr furnishes merchants with a comprehensive delivery dashboard UI, empowering them to oversee and manage their delivery operations with unparalleled ease.
 
-At it's core, Rendr will use data from checkout and search its network of integrated carriers to find the most
-suitable carrier for a delivery. In particular, Rendr will find the best carrier for 3 different service types:
-- Fast - delivery within 3 hours
-- Flexible - same day delivery
-- Standard - standard shipping
+Central to Rendr's operations is the intricate orchestration of delivery logistics, wherein data from checkout processes is meticulously analysed to identify the most suitable carrier for each delivery. This entails categorising services into three distinct tiers—Fast, Flexible, and Standard—each tailored to meet diverse delivery requirements. Moreover, we meticulously cater to specific needs such as 'Authority to Leave,' 'Tobacco,' 'Alcohol,' 'Medicine,' 'ID Check,' and more, ensuring a bespoke delivery experience for every customer.
 
-The service also takes into consideration different requirements, such at 'Authority to Leave', 'Tobacco',
-'Alcohol', 'Medicine', 'ID Check', and more.
+The hallmark of Rendr's service lies in its capacity to offer merchants a singular platform for all their delivery needs, encompassing quoting, booking, and end-to-end management. Additionally, our network-centric approach ensures redundancy, enabling seamless transitions to alternate carriers should contingencies arise. Through this network, we extend our reach across Australia, transcending the limitations of individual carriers.
 
-The benefit to the merchant is having one delivery service that deals with delivery requirements, quoting,
-booking, and simplifies the process of managing a delivery end-to-end. Another benefit is redundancy,
-when one carrier goes offline for the day, we will book with the next best delivery provider.
+Given our pivotal role in managing merchants' deliveries, we recognise the paramount importance of providing exemplary customer service, available seven days a week to address any concerns or issues that may arise.
 
-With this network of carriers, we are able to service more areas of Australia than a single carrier alone.
+## Identifying the Problem
+Despite boasting an exceptional customer service team, equipped with a proactive approach to issue resolution and delivery management, we encountered a significant hurdle. Our team lacked adequate tools to monitor deliveries in real-time and initiate timely interventions when necessary. The absence of such tools impeded our ability to provide proactive support and address issues promptly.
 
-Since the service makes bookings on behalf of the merchant, we offer customer service 7 days a week to assist if
-any problems arise.
+## Proposing a Solution
+In January 2023, we embarked on a quest to rectify this deficiency by exploring solutions to equip our customer service team with the requisite tools. Our objective was clear: integrate these tools seamlessly into Zendesk, our chosen ticketing software, thereby facilitating a cohesive workflow for our team members.
 
-## The Problem
-We truly have a great customer service team; no only do they assist merchants and receivers as problems arise, but they also continually
-monitor all the deliveries in progress and rectify as soon as something starts to go off-course. For example, if one carrier is not responding,
-our team will take precautionary action to reassign the booking to another one.
+## Developing the Solution
+Our exploration led us to leverage the extensibility of Zendesk, which allows for the integration of private apps within its ecosystem, including the ticket sidebar, editor, and navigation bar. Leveraging the power of Zendesk's architecture, we initiated a proof of concept with the following guiding principles:
 
-This has not always been possible, however. Without great tools, our team aren't able to get a real-time view of live deliveries, and more importantly,
-they aren't able to take action on those deliveries.
+1. **Abstraction Layer**: To ensure flexibility and mitigate potential lock-in, we devised an abstraction layer, enabling us to decouple our solution from the specifics of Zendesk's framework.
 
-So, in January 2023, we started to look at some solutions to bring tools to the customer service team. The goal was to have something easily accessible from
-[Zendesk](https://www.zendesk.com/) (our ticketing software), so that the team don't have to constantly navigate to another site, but rather can manage
-a delivery as they are looking into a ticket.
+2. **API Compatibility**: Given the nascent stage of the project, we opted to integrate our tools seamlessly with existing APIs, deferring the development of proprietary internal APIs for future iterations.
 
-## The Solution
-We soon realised that the Zendesk software allows businesses to embed private apps in various locations, such as the ticket sidebar, editor, and the navigation
-bar. At it's core, Zendesk displays your apps through iframes, and provides you with a JavaScript library known as ZAF (Zendesk Application Framework) to help you with the cross-site communication.
-This allows developers to build a Zendesk app in a framework-agnostic fashion.
+3. **Rapid Prototyping**: With a focus on agility and early feedback, we prioritised the rapid development and deployment of prototypes to gather insights and iterate swiftly.
 
-So, we started a proof of concept with the following requirements:
-1. Since we weren't 100% locked in on this idea, we needed an abstraction, so we aren't using the ZAF library directly. This lowers our cost of change if we decide to
-go in another direction.
-2. We wanted to make the tools work with existing APIs. As the project was early stage, we didn't want to build other internal APIs yet.
-3. Build and rollout a prototype as quickly as possible to get early feedback.
+### App Architecture and Continuous Integration
+Our architecture is built upon the principles of modularity and scalability. Leveraging NX, we have adopted a monorepo structure, wherein each Zendesk app resides within the 'apps' directory and shares code with other apps via the 'packages' directory. This approach not only enhances code reuse but also simplifies maintenance and facilitates collaboration across teams.
 
-So we got started by building the abstraction. Since we were using TypeScript, we started with an interface that defined the behaviour we wanted. It looked a little like this:
-```ts
-interface PlatformService {
-  getTicket(): Promise<Ticket>;
+Additionally, we have embraced Vite as our build tool of choice. To streamline the deployment process, we have developed a bespoke Vite plugin that automatically generates the correct folder structure required to upload the app to Zendesk. This automation significantly reduces manual effort and ensures consistency across deployments.
 
-  getUser(): Promise<User>;
+In our Continuous Integration (CI) pipeline, we utilise Github Actions to build and test each pull request. Upon merging, another action is triggered to deploy changes to Zendesk using the ZCLI tool. Leveraging NX once again, we selectively build only affected apps and packages, keeping build times minimal and ensuring swift deployment of changes.
 
-  // .. rest omitted
-}
+### Implementation Details
+Our implementation strategy revolves around leveraging TypeScript and React to craft a robust, maintainable solution. We commenced by defining an interface, encapsulating the desired functionality of our platform service. Subsequently, we developed a concrete implementation, seamlessly interfacing with Zendesk's API through the ZAF (Zendesk Application Framework) JavaScript library.
 
-interface Ticket {
-  id: number;
-  title: string;
-  description: string;
-  tags: string[];
-}
+By encapsulating the platform service within a React context provider, we ensured universal accessibility across our application components. This architectural decision facilitated seamless integration with our existing codebase and laid the groundwork for future extensibility.
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  groups: string[];
-}
-```
+## Conclusion
+In conclusion, the successful integration of Zendesk-powered customer service tools stands as a testament to our commitment to excellence at Rendr. By harnessing the synergies between React, TypeScript, Zendesk, and cutting-edge development tools such as NX and Vite, we have equipped our customer service team with the tools they need to deliver exceptional support experiences. Looking ahead, we remain steadfast in our pursuit of innovation, continuously refining our internal tools to meet the evolving needs of our dynamic ecosystem.
 
-Then we wrote the concrete implementation that 'wraps' the ZAF framework:
-```ts
-class ZendeskPlatformService implements PlatformService {
-  private client: Client;
-
-  constructor() {
-    this.client = ZAFClient.init();
-  }
-
-  async getTicket() {
-    const ticket = await this.client.get('ticket');
-    // ... rest omitted
-  }
-}
-```
-
-This service was made available to the rest of the application via React context. A custom provider component was built to accept
-an implementation of the `PlatformService` interface and share it to components in the subtree. To assist with retrieving an instance of this service,
-we used a custom hook `usePlatform()`;
-
-This means that any component wrapped with `PlatformProvider` can access an instance of the platform service via `usePlatform()`. If we need to change the implementation
-at some future point in time, we can just pass in a different instance to the provider:
-```tsx
-const zendeskPlatformService = new ZendeskPlatformService();
-//....
-
-export default function App() {
-  return (
-   <PlatformService service={zendeskPlatformService}>
-      <Example />
-   </PlatformService>
-  );
-}
-```
+Through collaboration, innovation, and a relentless dedication to our mission, we are poised to elevate the standard of customer service excellence in the realm of delivery logistics.
