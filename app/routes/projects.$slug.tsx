@@ -9,7 +9,7 @@ import invariant from "tiny-invariant";
 import { Link, useLoaderData } from "@remix-run/react";
 import { useMdxComponent } from "~/hooks/useMdxComponent";
 
-import styles from "highlight.js/styles/base16/gruvbox-dark-hard.css";
+import styles from "highlight.js/styles/atom-one-dark.css";
 import { Header } from "~/components/header";
 import { format } from "date-fns";
 import { getProject, ProjectFrontmatter } from "~/utils/projects";
