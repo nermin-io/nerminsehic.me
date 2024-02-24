@@ -7,11 +7,15 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useFetchers,
+  useNavigation,
 } from "@remix-run/react";
 import styles from "./styles.css";
 import { Navbar } from "~/components/navbar";
 import { Footer } from "~/components/footer";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import NProgress from "nprogress";
+import { useEffect, useMemo } from "react";
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
@@ -53,7 +57,31 @@ export const meta: MetaFunction = () => {
 
 const queryClient = new QueryClient();
 
+NProgress.configure({
+  easing: "ease",
+  speed: 500,
+  trickleSpeed: 200,
+  showSpinner: false,
+});
+
 export default function App() {
+  const transition = useNavigation();
+  const fetchers = useFetchers();
+
+  const state = useMemo<"idle" | "loading">(() => {
+    const states = [
+      transition.state,
+      ...fetchers.map((fetcher) => fetcher.state),
+    ];
+    if (states.every((state) => state === "idle")) return "idle";
+    return "loading";
+  }, [transition.state, fetchers]);
+
+  useEffect(() => {
+    if (state === "loading") NProgress.start();
+    if (state === "idle") NProgress.done();
+  }, [transition.state]);
+
   return (
     <html lang="en">
       <head>

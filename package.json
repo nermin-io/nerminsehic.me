@@ -24,6 +24,7 @@
     "highlight.js": "^11.9.0",
     "isbot": "^4.1.0",
     "mdx-bundler": "^10.0.1",
+    "nprogress": "^0.2.0",
     "qs": "^6.11.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -38,6 +39,7 @@
   "devDependencies": {
     "@remix-run/dev": "^2.5.0",
     "@tailwindcss/typography": "^0.5.10",
+    "@types/nprogress": "^0.2.3",
     "@types/qs": "^6.9.11",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
