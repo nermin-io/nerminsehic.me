@@ -16,7 +16,7 @@ export type Project = {
   slug: string;
   route: string;
   frontmatter: ProjectFrontmatter;
-  lastModified?: Date;
+  lastModified?: Date | string;
 };
 
 export async function getProject(slug: string) {
