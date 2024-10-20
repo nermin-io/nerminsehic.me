@@ -5,12 +5,12 @@ import { motion } from "framer-motion";
 import { LinkedInIcon } from "~/components/icons/LinkedInIcon";
 import { GithubIcon } from "~/components/icons/GithubIcon";
 
-const LINKS = [
+const links = [
   { name: "Blog", to: "/blog" },
   { name: "Projects", to: "/projects" },
 ];
 
-const SOCIAL_LINKS = [
+const socialLinks = [
   {
     icon: GithubIcon,
     to: "https://github.com/nermin-io",
@@ -24,7 +24,7 @@ const SOCIAL_LINKS = [
 const NAV_WIDTH = 80;
 
 function getCurrentPageIndex(pathname: string): number {
-  return LINKS.findIndex((link) => isLinkSelected(link.to, pathname));
+  return links.findIndex((link) => isLinkSelected(link.to, pathname));
 }
 
 function isLinkSelected(link: string, pathname: string): boolean {
@@ -43,7 +43,7 @@ function NavList() {
   return (
     <div className="h-full">
       <ul className="flex flex-row items-center h-full flex-grow">
-        {LINKS.map((link, index) => {
+        {links.map((link, index) => {
           const isSelected = isLinkSelected(link.to, location.pathname);
           return (
             <li
@@ -84,7 +84,7 @@ function NavList() {
 function SocialLinks() {
   return (
     <div className="flex flex-row gap-5">
-      {SOCIAL_LINKS.map((link) => (
+      {socialLinks.map((link) => (
         <Link
           key={link.to}
           to={link.to}

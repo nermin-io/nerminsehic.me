@@ -80,7 +80,7 @@ export default function App() {
   useEffect(() => {
     if (state === "loading") NProgress.start();
     if (state === "idle") NProgress.done();
-  }, [transition.state]);
+  }, [state, transition.state]);
 
   return (
     <html lang="en">

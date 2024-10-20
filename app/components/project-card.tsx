@@ -1,14 +1,16 @@
 import { format } from "date-fns";
 import { Link } from "@remix-run/react";
 import { Project } from "~/utils/projects";
+import { SerializeFrom } from "@remix-run/node";
 
-interface ProjectCardProps {
-  project: Project;
-}
+type ProjectCardProps = {
+  project: SerializeFrom<Project>;
+};
+
 export function ProjectCard({ project }: ProjectCardProps) {
   const { title, description, timestamp, tags } = project.frontmatter;
-
   const date = timestamp ? new Date(timestamp) : new Date();
+
   return (
     <Link prefetch="intent" to={`/projects/${project.slug}`}>
       <div className="border border-background-muted hover:bg-background-muted rounded-md py-2 px-3">

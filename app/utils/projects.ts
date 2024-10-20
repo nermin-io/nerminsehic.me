@@ -16,7 +16,7 @@ export type Project = {
   slug: string;
   route: string;
   frontmatter: ProjectFrontmatter;
-  lastModified?: Date | string;
+  lastModified?: Date;
 };
 
 export async function getProject(slug: string) {
@@ -67,21 +67,21 @@ export async function getProject(slug: string) {
 
 export async function getAllProjects(): Promise<Project[]> {
   const cwd = process.cwd();
-  const postsPath = path.join(cwd, "content", "projects");
+  const directoryPath = path.join(cwd, "content", "projects");
 
-  const directoryEntries = await readdir(postsPath, {
+  const dirents = await readdir(directoryPath, {
     withFileTypes: true,
   });
 
   return await Promise.all(
-    directoryEntries.map(async (file) => {
-      const stats = fs.statSync(file.path);
-      const direntPath = path.join(postsPath, file.name);
+    dirents.map(async (dirent) => {
+      const direntPath = path.join(directoryPath, dirent.name);
+      const stats = fs.statSync(direntPath);
       const fileData = await readFile(direntPath);
       const frontmatter = parseFrontMatter(fileData.toString());
       const attributes = frontmatter.attributes as ProjectFrontmatter;
 
-      const slug = file.name.replace(/\.mdx/, "");
+      const slug = dirent.name.replace(/\.mdx/, "");
       const route = path.join("/projects", slug);
 
       return {

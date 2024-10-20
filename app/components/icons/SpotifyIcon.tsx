@@ -1,7 +1,7 @@
-interface SpotifyIconProps {
+type SpotifyIconProps = {
   width?: number;
   height?: number;
-}
+};
 
 export function SpotifyIcon({ width = 24, height = 24 }: SpotifyIconProps) {
   return (

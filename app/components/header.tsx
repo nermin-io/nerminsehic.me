@@ -1,9 +1,9 @@
 import { Spotify } from "~/components/spotify";
 
-interface HeaderProps {
+type HeaderProps = {
   title: string;
   subtitle: string;
-}
+};
 
 export function Header({ title, subtitle }: HeaderProps) {
   return (

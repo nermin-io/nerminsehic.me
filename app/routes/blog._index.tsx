@@ -1,8 +1,8 @@
 import { getBlogPosts } from "~/utils/blog";
 import { json, MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { ArticleList } from "~/components/article-list";
 import { Header } from "~/components/header";
+import { ArticleCard } from "~/components/article-card";
 
 export async function loader() {
   const posts = await getBlogPosts();
@@ -25,7 +25,11 @@ export default function BlogIndex() {
   return (
     <div className="space-y-2">
       <Header title="Blog" subtitle="My technical writing" />
-      <ArticleList posts={posts} />
+      <div className="flex flex-col gap-3">
+        {posts.map((post) => (
+          <ArticleCard post={post} key={post.slug} />
+        ))}
+      </div>
     </div>
   );
 }

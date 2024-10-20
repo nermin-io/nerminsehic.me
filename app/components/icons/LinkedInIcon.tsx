@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-interface LinkedInIconProps {
+type LinkedInIconProps = {
   width?: number;
   height?: number;
   fill?: string;
   onHoverFill?: string;
-}
+};
 
 export function LinkedInIcon({
   width = 24,

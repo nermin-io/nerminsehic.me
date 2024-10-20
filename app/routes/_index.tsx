@@ -1,10 +1,10 @@
 import { json, MetaFunction } from "@remix-run/node";
 import { Header } from "~/components/header";
-import { AboutSection } from "~/components/sections/about-section";
-import { SkillsSection } from "~/components/sections/skills-section";
 import { getBlogPosts } from "~/utils/blog";
 import { useLoaderData } from "@remix-run/react";
-import { ArticleList } from "~/components/article-list";
+import { ArticleCard } from "~/components/article-card";
+import { AboutSection } from "~/sections/about-section";
+import { SkillsSection } from "~/sections/skills-section";
 
 export async function loader() {
   const posts = await getBlogPosts();
@@ -34,7 +34,9 @@ export default function Index() {
         className="space-y-2 py-8 border-b border-background-muted"
       >
         <h2 className="font-medium text-lg">From The Blog</h2>
-        <ArticleList posts={posts} />
+        {posts.map((post) => (
+          <ArticleCard post={post} key={post.slug} />
+        ))}
       </section>
     </div>
   );

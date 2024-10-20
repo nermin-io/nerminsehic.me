@@ -2,7 +2,7 @@ import { json, MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Header } from "~/components/header";
 import { getAllProjects } from "~/utils/projects";
-import { ProjectsList } from "~/components/projects-list";
+import { ProjectCard } from "~/components/project-card";
 
 export async function loader() {
   const projects = await getAllProjects();
@@ -24,7 +24,11 @@ export default function ProjectsIndex() {
   return (
     <div className="space-y-2">
       <Header title="Projects" subtitle="A collection of my work" />
-      <ProjectsList projects={projects} />
+      <div className="flex flex-col gap-3">
+        {projects.map((project) => (
+          <ProjectCard project={project} key={project.slug} />
+        ))}
+      </div>
     </div>
   );
 }

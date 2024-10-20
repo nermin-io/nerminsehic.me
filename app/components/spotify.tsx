@@ -1,11 +1,7 @@
-import { useCurrentlyPlayingQuery } from "~/queries/useCurrentlyPlayingQuery";
 import { SpotifyIcon } from "~/components/icons/SpotifyIcon";
 import { CurrentlyPlaying } from "~/services/spotify.server";
 import { Link } from "@remix-run/react";
-
-function Loading() {
-  return <p className="font-medium">Loading player...</p>;
-}
+import { useCurrentlyPlaying } from "~/queries/spotify";
 
 function CurrentlyPlayingTrack({ track }: { track: CurrentlyPlaying }) {
   if (!track.playing)
@@ -30,15 +26,15 @@ function CurrentlyPlayingTrack({ track }: { track: CurrentlyPlaying }) {
 }
 
 export function Spotify() {
-  const { currentlyPlaying, isLoading } = useCurrentlyPlayingQuery();
+  const currentlyPlaying = useCurrentlyPlaying();
 
   return (
     <div className="flex flex-row items-center gap-3 text-sm">
       <SpotifyIcon height={30} width={30} />
-      {isLoading || !currentlyPlaying ? (
-        <Loading />
+      {currentlyPlaying.isLoading || !currentlyPlaying.data ? (
+        <p className="font-medium">Loading player...</p>
       ) : (
-        <CurrentlyPlayingTrack track={currentlyPlaying} />
+        <CurrentlyPlayingTrack track={currentlyPlaying.data} />
       )}
     </div>
   );

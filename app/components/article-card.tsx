@@ -1,10 +1,12 @@
 import { BlogPost } from "~/utils/blog";
 import { format } from "date-fns";
 import { Link } from "@remix-run/react";
+import { SerializeFrom } from "@remix-run/node";
 
-interface ArticleCardProps {
-  post: BlogPost;
-}
+type ArticleCardProps = {
+  post: SerializeFrom<BlogPost>;
+};
+
 export function ArticleCard({ post }: ArticleCardProps) {
   const { title, description, timestamp, tags } = post.frontmatter;
 

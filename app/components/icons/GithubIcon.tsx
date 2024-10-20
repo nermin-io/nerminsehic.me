@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-interface GithubIconProps {
+type GithubIconProps = {
   width?: number;
   height?: number;
   fill?: string;
   onHoverFill?: string;
-}
+};
 
 export function GithubIcon({
   width = 24,
