@@ -8,7 +8,7 @@ import {
 import invariant from "tiny-invariant";
 import { BlogFrontmatter, getBlogPost } from "~/utils/blog";
 import { useLoaderData } from "@remix-run/react";
-import { useMdxComponent } from "~/hooks/useMdxComponent";
+import { useMdxComponent } from "~/hooks/use-mdx-component";
 
 import styles from "highlight.js/styles/atom-one-dark.css";
 import { Header } from "~/components/header";
